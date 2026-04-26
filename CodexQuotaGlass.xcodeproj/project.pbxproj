@@ -1,0 +1,712 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A01000000000000000000001 /* Sources/CodexQuotaGlass/App/CodexQuotaGlassApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01000000000000000000001 /* Sources/CodexQuotaGlass/App/CodexQuotaGlassApp.swift */; };
+		A01000000000000000000002 /* Sources/CodexQuotaGlass/Support/QuotaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01000000000000000000002 /* Sources/CodexQuotaGlass/Support/QuotaViewModel.swift */; };
+		A01000000000000000000003 /* Sources/CodexQuotaGlass/Support/GlassSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01000000000000000000003 /* Sources/CodexQuotaGlass/Support/GlassSupport.swift */; };
+		A01000000000000000000004 /* Sources/CodexQuotaGlass/Views/DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01000000000000000000004 /* Sources/CodexQuotaGlass/Views/DashboardView.swift */; };
+		A01000000000000000000005 /* Sources/CodexQuotaGlass/Views/MenuBarPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01000000000000000000005 /* Sources/CodexQuotaGlass/Views/MenuBarPanel.swift */; };
+		A01000000000000000000006 /* Sources/CodexQuotaGlass/Views/MenuBarStatusLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01000000000000000000006 /* Sources/CodexQuotaGlass/Views/MenuBarStatusLabel.swift */; };
+		A01000000000000000000007 /* Sources/CodexQuotaGlass/Views/QuotaMetricCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01000000000000000000007 /* Sources/CodexQuotaGlass/Views/QuotaMetricCard.swift */; };
+		A01000000000000000000008 /* Sources/CodexQuotaGlass/Views/RingMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01000000000000000000008 /* Sources/CodexQuotaGlass/Views/RingMeter.swift */; };
+		A01000000000000000000009 /* CodexQuotaKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = P00000000000000000000002 /* CodexQuotaKit.framework */; };
+		A0100000000000000000000A /* CodexQuotaKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = P00000000000000000000002 /* CodexQuotaKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A0100000000000000000000B /* CodexQuotaWidgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = P00000000000000000000003 /* CodexQuotaWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A0100000000000000000000C /* Xcode/CodexQuotaGlass/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F04000000000000000000002 /* Xcode/CodexQuotaGlass/Assets.xcassets */; };
+		B01000000000000000000001 /* Sources/CodexQuotaKit/CodexAuthTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02000000000000000000001 /* Sources/CodexQuotaKit/CodexAuthTokenStore.swift */; };
+		B01000000000000000000002 /* Sources/CodexQuotaKit/CodexQuotaProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02000000000000000000002 /* Sources/CodexQuotaKit/CodexQuotaProvider.swift */; };
+		B01000000000000000000003 /* Sources/CodexQuotaKit/CodexUsageAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02000000000000000000003 /* Sources/CodexQuotaKit/CodexUsageAPIClient.swift */; };
+		B01000000000000000000004 /* Sources/CodexQuotaKit/QuotaFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02000000000000000000004 /* Sources/CodexQuotaKit/QuotaFormatting.swift */; };
+		B01000000000000000000005 /* Sources/CodexQuotaKit/QuotaSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02000000000000000000005 /* Sources/CodexQuotaKit/QuotaSnapshot.swift */; };
+		B01000000000000000000006 /* Sources/CodexQuotaKit/QuotaSnapshotCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02000000000000000000006 /* Sources/CodexQuotaKit/QuotaSnapshotCache.swift */; };
+		C01000000000000000000001 /* Extensions/CodexQuotaWidgets/CodexQuotaWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03000000000000000000001 /* Extensions/CodexQuotaWidgets/CodexQuotaWidgets.swift */; };
+		C01000000000000000000002 /* CodexQuotaKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = P00000000000000000000002 /* CodexQuotaKit.framework */; };
+		C01000000000000000000003 /* CodexQuotaKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = P00000000000000000000002 /* CodexQuotaKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D00000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B00000000000000000000001;
+			remoteInfo = CodexQuotaKit;
+		};
+		D00000000000000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C00000000000000000000001;
+			remoteInfo = CodexQuotaWidgets;
+		};
+		D00000000000000000000003 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B00000000000000000000001;
+			remoteInfo = CodexQuotaKit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A02000000000000000000001 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A0100000000000000000000A /* CodexQuotaKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A02000000000000000000002 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A0100000000000000000000B /* CodexQuotaWidgets.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C02000000000000000000001 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C01000000000000000000003 /* CodexQuotaKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F00000000000000000000001 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = text; path = Package.swift; sourceTree = "<group>"; };
+		F00000000000000000000002 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F00000000000000000000003 /* CodexQuotaGlass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodexQuotaGlass.entitlements; sourceTree = "<group>"; };
+		F01000000000000000000001 /* Sources/CodexQuotaGlass/App/CodexQuotaGlassApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaGlass/App/CodexQuotaGlassApp.swift; sourceTree = "<group>"; };
+		F01000000000000000000002 /* Sources/CodexQuotaGlass/Support/QuotaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaGlass/Support/QuotaViewModel.swift; sourceTree = "<group>"; };
+		F01000000000000000000003 /* Sources/CodexQuotaGlass/Support/GlassSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaGlass/Support/GlassSupport.swift; sourceTree = "<group>"; };
+		F01000000000000000000004 /* Sources/CodexQuotaGlass/Views/DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaGlass/Views/DashboardView.swift; sourceTree = "<group>"; };
+		F01000000000000000000005 /* Sources/CodexQuotaGlass/Views/MenuBarPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaGlass/Views/MenuBarPanel.swift; sourceTree = "<group>"; };
+		F01000000000000000000006 /* Sources/CodexQuotaGlass/Views/MenuBarStatusLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaGlass/Views/MenuBarStatusLabel.swift; sourceTree = "<group>"; };
+		F01000000000000000000007 /* Sources/CodexQuotaGlass/Views/QuotaMetricCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaGlass/Views/QuotaMetricCard.swift; sourceTree = "<group>"; };
+		F01000000000000000000008 /* Sources/CodexQuotaGlass/Views/RingMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaGlass/Views/RingMeter.swift; sourceTree = "<group>"; };
+		F02000000000000000000001 /* Sources/CodexQuotaKit/CodexAuthTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaKit/CodexAuthTokenStore.swift; sourceTree = "<group>"; };
+		F02000000000000000000002 /* Sources/CodexQuotaKit/CodexQuotaProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaKit/CodexQuotaProvider.swift; sourceTree = "<group>"; };
+		F02000000000000000000003 /* Sources/CodexQuotaKit/CodexUsageAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaKit/CodexUsageAPIClient.swift; sourceTree = "<group>"; };
+		F02000000000000000000004 /* Sources/CodexQuotaKit/QuotaFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaKit/QuotaFormatting.swift; sourceTree = "<group>"; };
+		F02000000000000000000005 /* Sources/CodexQuotaKit/QuotaSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaKit/QuotaSnapshot.swift; sourceTree = "<group>"; };
+		F02000000000000000000006 /* Sources/CodexQuotaKit/QuotaSnapshotCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaKit/QuotaSnapshotCache.swift; sourceTree = "<group>"; };
+		F03000000000000000000001 /* Extensions/CodexQuotaWidgets/CodexQuotaWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions/CodexQuotaWidgets/CodexQuotaWidgets.swift; sourceTree = "<group>"; };
+		F03000000000000000000002 /* Extensions/CodexQuotaWidgets/CodexQuotaWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Extensions/CodexQuotaWidgets/CodexQuotaWidgets.entitlements; sourceTree = "<group>"; };
+		F03000000000000000000003 /* Extensions/CodexQuotaWidgets/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Extensions/CodexQuotaWidgets/Info.plist; sourceTree = "<group>"; };
+		F03000000000000000000004 /* Extensions/README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Extensions/README.md; sourceTree = "<group>"; };
+		F04000000000000000000001 /* Xcode/CodexQuotaGlass/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Xcode/CodexQuotaGlass/Info.plist; sourceTree = "<group>"; };
+		F04000000000000000000002 /* Xcode/CodexQuotaGlass/Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Xcode/CodexQuotaGlass/Assets.xcassets; sourceTree = "<group>"; };
+		P00000000000000000000001 /* CodexQuotaGlass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodexQuotaGlass.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		P00000000000000000000002 /* CodexQuotaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CodexQuotaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		P00000000000000000000003 /* CodexQuotaWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CodexQuotaWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A03000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A01000000000000000000009 /* CodexQuotaKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B03000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C01000000000000000000002 /* CodexQuotaKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		000000000000000000000002 = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000001 /* Package.swift */,
+				F00000000000000000000002 /* README.md */,
+				F00000000000000000000003 /* CodexQuotaGlass.entitlements */,
+				000000000000000000000004 /* App */,
+				000000000000000000000005 /* CodexQuotaKit */,
+				000000000000000000000006 /* Extensions */,
+				000000000000000000000007 /* Xcode */,
+				000000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		000000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				P00000000000000000000001 /* CodexQuotaGlass.app */,
+				P00000000000000000000002 /* CodexQuotaKit.framework */,
+				P00000000000000000000003 /* CodexQuotaWidgets.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		000000000000000000000004 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F01000000000000000000001 /* Sources/CodexQuotaGlass/App/CodexQuotaGlassApp.swift */,
+				F01000000000000000000002 /* Sources/CodexQuotaGlass/Support/QuotaViewModel.swift */,
+				F01000000000000000000003 /* Sources/CodexQuotaGlass/Support/GlassSupport.swift */,
+				F01000000000000000000004 /* Sources/CodexQuotaGlass/Views/DashboardView.swift */,
+				F01000000000000000000005 /* Sources/CodexQuotaGlass/Views/MenuBarPanel.swift */,
+				F01000000000000000000006 /* Sources/CodexQuotaGlass/Views/MenuBarStatusLabel.swift */,
+				F01000000000000000000007 /* Sources/CodexQuotaGlass/Views/QuotaMetricCard.swift */,
+				F01000000000000000000008 /* Sources/CodexQuotaGlass/Views/RingMeter.swift */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
+		000000000000000000000005 /* CodexQuotaKit */ = {
+			isa = PBXGroup;
+			children = (
+				F02000000000000000000001 /* Sources/CodexQuotaKit/CodexAuthTokenStore.swift */,
+				F02000000000000000000002 /* Sources/CodexQuotaKit/CodexQuotaProvider.swift */,
+				F02000000000000000000003 /* Sources/CodexQuotaKit/CodexUsageAPIClient.swift */,
+				F02000000000000000000004 /* Sources/CodexQuotaKit/QuotaFormatting.swift */,
+				F02000000000000000000005 /* Sources/CodexQuotaKit/QuotaSnapshot.swift */,
+				F02000000000000000000006 /* Sources/CodexQuotaKit/QuotaSnapshotCache.swift */,
+			);
+			name = CodexQuotaKit;
+			sourceTree = "<group>";
+		};
+		000000000000000000000006 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F03000000000000000000001 /* Extensions/CodexQuotaWidgets/CodexQuotaWidgets.swift */,
+				F03000000000000000000002 /* Extensions/CodexQuotaWidgets/CodexQuotaWidgets.entitlements */,
+				F03000000000000000000003 /* Extensions/CodexQuotaWidgets/Info.plist */,
+				F03000000000000000000004 /* Extensions/README.md */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		000000000000000000000007 /* Xcode */ = {
+			isa = PBXGroup;
+			children = (
+				F04000000000000000000001 /* Xcode/CodexQuotaGlass/Info.plist */,
+				F04000000000000000000002 /* Xcode/CodexQuotaGlass/Assets.xcassets */,
+			);
+			name = Xcode;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A00000000000000000000001 /* CodexQuotaGlass */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A06000000000000000000001 /* Build configuration list for PBXNativeTarget "CodexQuotaGlass" */;
+			buildPhases = (
+				A04000000000000000000001 /* Sources */,
+				A05000000000000000000001 /* Resources */,
+				A03000000000000000000001 /* Frameworks */,
+				A02000000000000000000001 /* Embed Frameworks */,
+				A02000000000000000000002 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A07000000000000000000001 /* PBXTargetDependency */,
+				A07000000000000000000002 /* PBXTargetDependency */,
+			);
+			name = CodexQuotaGlass;
+			productName = CodexQuotaGlass;
+			productReference = P00000000000000000000001 /* CodexQuotaGlass.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B00000000000000000000001 /* CodexQuotaKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B06000000000000000000001 /* Build configuration list for PBXNativeTarget "CodexQuotaKit" */;
+			buildPhases = (
+				B04000000000000000000001 /* Sources */,
+				B03000000000000000000001 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CodexQuotaKit;
+			productName = CodexQuotaKit;
+			productReference = P00000000000000000000002 /* CodexQuotaKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C00000000000000000000001 /* CodexQuotaWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C06000000000000000000001 /* Build configuration list for PBXNativeTarget "CodexQuotaWidgets" */;
+			buildPhases = (
+				C04000000000000000000001 /* Sources */,
+				C03000000000000000000001 /* Frameworks */,
+				C02000000000000000000001 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C07000000000000000000001 /* PBXTargetDependency */,
+			);
+			name = CodexQuotaWidgets;
+			productName = CodexQuotaWidgets;
+			productReference = P00000000000000000000003 /* CodexQuotaWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		000000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2640;
+				LastUpgradeCheck = 2640;
+				TargetAttributes = {
+					A00000000000000000000001 = {
+						CreatedOnToolsVersion = 26.4.1;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.Mac = {
+								enabled = 1;
+							};
+						};
+					};
+					B00000000000000000000001 = {
+						CreatedOnToolsVersion = 26.4.1;
+					};
+					C00000000000000000000001 = {
+						CreatedOnToolsVersion = 26.4.1;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.Mac = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 000000000000000000000008 /* Build configuration list for PBXProject "CodexQuotaGlass" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 000000000000000000000002;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 000000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A00000000000000000000001 /* CodexQuotaGlass */,
+				B00000000000000000000001 /* CodexQuotaKit */,
+				C00000000000000000000001 /* CodexQuotaWidgets */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A05000000000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0100000000000000000000C /* Xcode/CodexQuotaGlass/Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A04000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A01000000000000000000001 /* Sources/CodexQuotaGlass/App/CodexQuotaGlassApp.swift in Sources */,
+				A01000000000000000000002 /* Sources/CodexQuotaGlass/Support/QuotaViewModel.swift in Sources */,
+				A01000000000000000000003 /* Sources/CodexQuotaGlass/Support/GlassSupport.swift in Sources */,
+				A01000000000000000000004 /* Sources/CodexQuotaGlass/Views/DashboardView.swift in Sources */,
+				A01000000000000000000005 /* Sources/CodexQuotaGlass/Views/MenuBarPanel.swift in Sources */,
+				A01000000000000000000006 /* Sources/CodexQuotaGlass/Views/MenuBarStatusLabel.swift in Sources */,
+				A01000000000000000000007 /* Sources/CodexQuotaGlass/Views/QuotaMetricCard.swift in Sources */,
+				A01000000000000000000008 /* Sources/CodexQuotaGlass/Views/RingMeter.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B04000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B01000000000000000000001 /* Sources/CodexQuotaKit/CodexAuthTokenStore.swift in Sources */,
+				B01000000000000000000002 /* Sources/CodexQuotaKit/CodexQuotaProvider.swift in Sources */,
+				B01000000000000000000003 /* Sources/CodexQuotaKit/CodexUsageAPIClient.swift in Sources */,
+				B01000000000000000000004 /* Sources/CodexQuotaKit/QuotaFormatting.swift in Sources */,
+				B01000000000000000000005 /* Sources/CodexQuotaKit/QuotaSnapshot.swift in Sources */,
+				B01000000000000000000006 /* Sources/CodexQuotaKit/QuotaSnapshotCache.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C04000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C01000000000000000000001 /* Extensions/CodexQuotaWidgets/CodexQuotaWidgets.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A07000000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B00000000000000000000001 /* CodexQuotaKit */;
+			targetProxy = D00000000000000000000001 /* PBXContainerItemProxy */;
+		};
+		A07000000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C00000000000000000000001 /* CodexQuotaWidgets */;
+			targetProxy = D00000000000000000000002 /* PBXContainerItemProxy */;
+		};
+		C07000000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B00000000000000000000001 /* CodexQuotaKit */;
+			targetProxy = D00000000000000000000003 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		000000000000000000000009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		00000000000000000000000A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		A06000000000000000000002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+				buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+					CODE_SIGN_ENTITLEMENTS = CodexQuotaGlass.entitlements;
+					CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C4ZGXC6MY9;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Xcode/CodexQuotaGlass/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.CodexQuotaGlass;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A06000000000000000000003 /* Release */ = {
+			isa = XCBuildConfiguration;
+				buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+					CODE_SIGN_ENTITLEMENTS = CodexQuotaGlass.entitlements;
+					CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C4ZGXC6MY9;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Xcode/CodexQuotaGlass/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.CodexQuotaGlass;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		B06000000000000000000002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_DEBUG_DYLIB = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.CodexQuotaGlass.CodexQuotaKit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		B06000000000000000000003 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_DEBUG_DYLIB = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.CodexQuotaGlass.CodexQuotaKit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		C06000000000000000000002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+				buildSettings = {
+					APPLICATION_EXTENSION_API_ONLY = YES;
+					CODE_SIGN_ENTITLEMENTS = Extensions/CodexQuotaWidgets/CodexQuotaWidgets.entitlements;
+					CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C4ZGXC6MY9;
+				ENABLE_DEBUG_DYLIB = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Extensions/CodexQuotaWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.CodexQuotaGlass.CodexQuotaWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		C06000000000000000000003 /* Release */ = {
+			isa = XCBuildConfiguration;
+				buildSettings = {
+					APPLICATION_EXTENSION_API_ONLY = YES;
+					CODE_SIGN_ENTITLEMENTS = Extensions/CodexQuotaWidgets/CodexQuotaWidgets.entitlements;
+					CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C4ZGXC6MY9;
+				ENABLE_DEBUG_DYLIB = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Extensions/CodexQuotaWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.CodexQuotaGlass.CodexQuotaWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		000000000000000000000008 /* Build configuration list for PBXProject "CodexQuotaGlass" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				000000000000000000000009 /* Debug */,
+				00000000000000000000000A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A06000000000000000000001 /* Build configuration list for PBXNativeTarget "CodexQuotaGlass" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A06000000000000000000002 /* Debug */,
+				A06000000000000000000003 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B06000000000000000000001 /* Build configuration list for PBXNativeTarget "CodexQuotaKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B06000000000000000000002 /* Debug */,
+				B06000000000000000000003 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C06000000000000000000001 /* Build configuration list for PBXNativeTarget "CodexQuotaWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C06000000000000000000002 /* Debug */,
+				C06000000000000000000003 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 000000000000000000000001 /* Project object */;
+}
