@@ -50,10 +50,12 @@ struct DashboardView: View {
       .padding(16)
       .quotaGlass(cornerRadius: 18)
 
+      MenuBarStyleSettings()
+
       Spacer(minLength: 0)
     }
     .padding(22)
-    .frame(minWidth: 520, minHeight: 390)
+    .frame(minWidth: 560, minHeight: 460)
   }
 
   private var header: some View {
@@ -108,6 +110,39 @@ struct DashboardView: View {
       }
       .disabled(model.isRefreshing)
     }
+  }
+}
+
+private struct MenuBarStyleSettings: View {
+  @AppStorage(MenuBarDisplayStyle.storageKey) private var styleRawValue = MenuBarDisplayStyle.defaultStyle.rawValue
+
+  var body: some View {
+    HStack(spacing: 12) {
+      Image(systemName: "menubar.rectangle")
+        .frame(width: 18)
+        .foregroundStyle(.secondary)
+
+      VStack(alignment: .leading, spacing: 3) {
+        Text("菜单栏样式")
+          .font(.callout)
+
+        Text("切换后会立即更新菜单栏图标。")
+          .font(.caption)
+          .foregroundStyle(.secondary)
+      }
+
+      Spacer()
+
+      Picker("菜单栏样式", selection: $styleRawValue) {
+        ForEach(MenuBarDisplayStyle.allCases) { style in
+          Text(style.title).tag(style.rawValue)
+        }
+      }
+      .labelsHidden()
+      .frame(width: 190)
+    }
+    .padding(16)
+    .quotaGlass(cornerRadius: 18)
   }
 }
 
