@@ -39,4 +39,32 @@ public enum QuotaFormatting {
   public static func compactControlText(_ snapshot: QuotaSnapshot) -> String {
     "5h \(percent(snapshot.fiveHour.remainingPercent)) / 周 \(percent(snapshot.weekly.remainingPercent))"
   }
+
+  public static func tokenCount(_ value: Int) -> String {
+    let absoluteValue = abs(value)
+    let sign = value < 0 ? "-" : ""
+
+    if absoluteValue >= 1_000_000 {
+      return "\(sign)\(oneDecimal(Double(absoluteValue) / 1_000_000))M"
+    }
+
+    if absoluteValue >= 1_000 {
+      return "\(sign)\(oneDecimal(Double(absoluteValue) / 1_000))K"
+    }
+
+    return "\(value)"
+  }
+
+  public static func tokenBreakdown(_ metrics: CodexTokenMetrics) -> String {
+    "In \(tokenCount(metrics.inputTokens)) · Out \(tokenCount(metrics.outputTokens)) · R \(tokenCount(metrics.reasoningOutputTokens)) · Cache \(tokenCount(metrics.cachedInputTokens))"
+  }
+
+  private static func oneDecimal(_ value: Double) -> String {
+    let rounded = (value * 10).rounded() / 10
+    if rounded.rounded() == rounded {
+      return "\(Int(rounded))"
+    }
+
+    return String(format: "%.1f", rounded)
+  }
 }

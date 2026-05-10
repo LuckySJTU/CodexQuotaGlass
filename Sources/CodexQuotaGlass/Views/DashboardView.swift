@@ -6,56 +6,30 @@ struct DashboardView: View {
   @ObservedObject var model: QuotaViewModel
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 18) {
-      header
+    ScrollView {
+      VStack(alignment: .leading, spacing: 18) {
+        header
 
-      if model.isLoggedIn {
-        HStack(spacing: 14) {
-          QuotaMetricCard(
-            window: model.snapshot.fiveHour,
-            resetText: model.fiveHourResetText
-          )
+        quotaSection
 
-          QuotaMetricCard(
-            window: model.snapshot.weekly,
-            resetText: model.weeklyResetText
-          )
-        }
-      } else {
-        LoggedOutDetailCard(model: model)
+        LocalUsageSummaryCard(
+          summary: model.localUsageSummary,
+          isRefreshing: model.isRefreshingLocalUsage
+        )
+
+        detailStatusCard
+
+        MenuBarStyleSettings()
+
+        MenuBarLocalUsagePeriodSettings()
+
+        DashboardActionsCard(model: model)
+
+        AppUpdateCard(model: model)
       }
-
-      VStack(alignment: .leading, spacing: 10) {
-        DetailRow(
-          title: "5 小时重置",
-          value: model.fiveHourResetText,
-          symbol: "clock"
-        )
-        DetailRow(
-          title: "一周重置",
-          value: model.weeklyResetText,
-          symbol: "calendar"
-        )
-        DetailRow(
-          title: "数据源",
-          value: model.isLoggedIn ? "Codex 登录认证" : "去登录",
-          symbol: "doc.text.magnifyingglass"
-        )
-        DetailRow(
-          title: "认证文件",
-          value: model.authStorageText,
-          symbol: "lock.doc"
-        )
-      }
-      .padding(16)
-      .quotaGlass(cornerRadius: 18)
-
-      MenuBarStyleSettings()
-
-      Spacer(minLength: 0)
+      .padding(22)
     }
-    .padding(22)
-    .frame(minWidth: 560, minHeight: 460)
+    .frame(minWidth: 680, minHeight: 640)
   }
 
   private var header: some View {
@@ -73,42 +47,228 @@ struct DashboardView: View {
       }
 
       Spacer()
+    }
+  }
 
-      Button {
-        Task {
-          await model.signInWithBrowser()
-        }
-      } label: {
-        Label(model.isAuthenticating ? "登录中" : "网页登录", systemImage: "safari")
+  @ViewBuilder
+  private var quotaSection: some View {
+    if model.isLoggedIn {
+      HStack(spacing: 14) {
+        QuotaMetricCard(
+          window: model.snapshot.fiveHour,
+          resetText: model.fiveHourResetText
+        )
+
+        QuotaMetricCard(
+          window: model.snapshot.weekly,
+          resetText: model.weeklyResetText
+        )
       }
-      .disabled(model.isAuthenticating)
+    } else {
+      LoggedOutDetailCard()
+    }
+  }
 
-      Button {
-        Task {
-          await model.importCodexAuth()
+  private var detailStatusCard: some View {
+    VStack(alignment: .leading, spacing: 10) {
+      DetailRow(
+        title: "5 小时重置",
+        value: model.fiveHourResetText,
+        symbol: "clock"
+      )
+      DetailRow(
+        title: "一周重置",
+        value: model.weeklyResetText,
+        symbol: "calendar"
+      )
+      DetailRow(
+        title: "数据源",
+        value: model.isLoggedIn ? "Codex 登录认证" : "去登录",
+        symbol: "doc.text.magnifyingglass"
+      )
+      DetailRow(
+        title: "认证文件",
+        value: model.authStorageText,
+        symbol: "lock.doc"
+      )
+      DetailRow(
+        title: "本地用量",
+        value: model.localUsageStatusText,
+        symbol: "chart.bar.doc.horizontal"
+      )
+      DetailRow(
+        title: "本地日志",
+        value: model.localUsageSourceText,
+        symbol: "folder"
+      )
+    }
+    .padding(16)
+    .quotaGlass(cornerRadius: 18)
+  }
+}
+
+private struct AppUpdateCard: View {
+  @ObservedObject var model: QuotaViewModel
+
+  private var state: AppUpdateState {
+    model.updateState
+  }
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 12) {
+      HStack(spacing: 12) {
+        Image(systemName: iconName)
+          .frame(width: 18)
+          .foregroundStyle(.secondary)
+
+        VStack(alignment: .leading, spacing: 3) {
+          Text("版本更新")
+            .font(.callout)
+
+          Text(state.statusText)
+            .font(.caption)
+            .foregroundStyle(.secondary)
         }
-      } label: {
-        Label("从 Codex 快捷登录", systemImage: "tray.and.arrow.down")
+
+        Spacer()
+
+        if state.isBusy {
+          ProgressView()
+            .controlSize(.small)
+        }
       }
 
-      if model.isLoggedIn {
-        Button(role: .destructive) {
+      HStack(spacing: 16) {
+        UpdateInfoLabel(title: "当前", value: state.currentVersion)
+        UpdateInfoLabel(title: "最新", value: state.latestVersion ?? "未知")
+        UpdateInfoLabel(title: "上次检查", value: lastCheckedText)
+
+        Spacer()
+
+        Button {
           Task {
-            await model.forgetAuth()
+            await model.checkForUpdates(force: true, autoInstall: true)
           }
         } label: {
-          Label("退出登录", systemImage: "person.crop.circle.badge.xmark")
+          Label("检查", systemImage: "arrow.clockwise")
         }
+        .disabled(state.isBusy)
+
+        if let downloadURL = state.downloadURL, state.canInstallUpdate {
+          Button {
+            Task {
+              await model.installUpdate(from: downloadURL)
+            }
+          } label: {
+            Label("立即更新", systemImage: "arrow.down.app")
+          }
+        }
+
+        Button {
+          NSWorkspace.shared.open(state.releasePageURL)
+        } label: {
+          Label("Release", systemImage: "safari")
+        }
+      }
+      .controlSize(.small)
+    }
+    .padding(16)
+    .quotaGlass(cornerRadius: 18)
+  }
+
+  private var lastCheckedText: String {
+    guard let lastCheckedAt = state.lastCheckedAt else {
+      return "从未"
+    }
+
+    return QuotaFormatting.capturedTime(lastCheckedAt)
+  }
+
+  private var iconName: String {
+    switch state.phase {
+    case .upToDate:
+      "checkmark.circle"
+    case .available, .downloading, .installing, .relaunching:
+      "arrow.down.circle"
+    case .failed:
+      "exclamationmark.triangle"
+    case .idle, .checking:
+      "sparkle.magnifyingglass"
+    }
+  }
+}
+
+private struct UpdateInfoLabel: View {
+  var title: String
+  var value: String
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 2) {
+      Text(title)
+        .font(.caption2)
+        .foregroundStyle(.secondary)
+
+      Text(value)
+        .font(.caption.monospacedDigit())
+        .lineLimit(1)
+    }
+  }
+}
+
+private struct MenuBarLocalUsagePeriodSettings: View {
+  @AppStorage(MenuBarLocalUsagePeriodPreference.storageKey)
+  private var periodsRawValue = MenuBarLocalUsagePeriodPreference.defaultRawValue
+
+  private let columns = [
+    GridItem(.adaptive(minimum: 92), spacing: 12, alignment: .leading),
+  ]
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 12) {
+      HStack(spacing: 12) {
+        Image(systemName: "menubar.arrow.up.rectangle")
+          .frame(width: 18)
+          .foregroundStyle(.secondary)
+
+        VStack(alignment: .leading, spacing: 3) {
+          Text("菜单栏 token 周期")
+            .font(.callout)
+
+          Text("只影响菜单栏弹窗，详情页始终展示全部周期。")
+            .font(.caption)
+            .foregroundStyle(.secondary)
+        }
+
+        Spacer()
       }
 
-      Button {
-        Task {
-          await model.refresh()
+      LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
+        ForEach(CodexUsagePeriod.allCases) { period in
+          Toggle(period.title, isOn: binding(for: period))
+            .toggleStyle(.checkbox)
+            .font(.callout)
         }
-      } label: {
-        Label(model.isRefreshing ? "刷新中" : "刷新", systemImage: "arrow.clockwise")
       }
-      .disabled(model.isRefreshing)
+    }
+    .padding(16)
+    .quotaGlass(cornerRadius: 18)
+  }
+
+  private func binding(for period: CodexUsagePeriod) -> Binding<Bool> {
+    Binding {
+      MenuBarLocalUsagePeriodPreference.periods(from: periodsRawValue).contains(period)
+    } set: { isSelected in
+      var periods = MenuBarLocalUsagePeriodPreference.periods(from: periodsRawValue)
+
+      if isSelected {
+        if !periods.contains(period) {
+          periods.append(period)
+        }
+      } else {
+        periods.removeAll { $0 == period }
+      }
+
+      periodsRawValue = MenuBarLocalUsagePeriodPreference.rawValue(for: periods)
     }
   }
 }
@@ -146,9 +306,90 @@ private struct MenuBarStyleSettings: View {
   }
 }
 
-private struct LoggedOutDetailCard: View {
+private struct DashboardActionsCard: View {
   @ObservedObject var model: QuotaViewModel
 
+  var body: some View {
+    VStack(alignment: .leading, spacing: 12) {
+      HStack(spacing: 12) {
+        LoginSyncIcon()
+
+        VStack(alignment: .leading, spacing: 3) {
+          Text("登录与同步")
+            .font(.callout)
+
+          Text("管理认证状态，并手动刷新额度和本地 token 用量。")
+            .font(.caption)
+            .foregroundStyle(.secondary)
+        }
+
+        Spacer()
+      }
+
+      HStack(spacing: 10) {
+        Button {
+          Task {
+            await model.signInWithBrowser()
+          }
+        } label: {
+          Label(model.isAuthenticating ? "登录中" : "网页登录", systemImage: "safari")
+        }
+        .disabled(model.isAuthenticating)
+
+        Button {
+          Task {
+            await model.importCodexAuth()
+          }
+        } label: {
+          Label("从 Codex 快捷登录", systemImage: "tray.and.arrow.down")
+        }
+
+        if model.isLoggedIn {
+          Button(role: .destructive) {
+            Task {
+              await model.forgetAuth()
+            }
+          } label: {
+            Label("退出登录", systemImage: "person.crop.circle.badge.xmark")
+          }
+        }
+
+        Spacer()
+
+        Button {
+          Task {
+            await model.refresh(forceLocalUsage: true)
+          }
+        } label: {
+          Label(model.isRefreshing ? "刷新中" : "刷新", systemImage: "arrow.clockwise")
+        }
+        .disabled(model.isRefreshing)
+      }
+      .controlSize(.small)
+    }
+    .padding(16)
+    .quotaGlass(cornerRadius: 18)
+  }
+}
+
+private struct LoginSyncIcon: View {
+  var body: some View {
+    ZStack(alignment: .bottomTrailing) {
+      Image(systemName: "person.crop.circle")
+        .font(.system(size: 16, weight: .regular))
+
+      Image(systemName: "arrow.clockwise.circle.fill")
+        .font(.system(size: 8, weight: .semibold))
+        .background(Circle().fill(.background))
+        .offset(x: 2, y: 2)
+    }
+    .symbolRenderingMode(.hierarchical)
+    .foregroundStyle(.secondary)
+    .frame(width: 18, height: 18)
+  }
+}
+
+private struct LoggedOutDetailCard: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
       HStack(spacing: 10) {
@@ -163,27 +404,6 @@ private struct LoggedOutDetailCard: View {
             .font(.callout)
             .foregroundStyle(.secondary)
         }
-      }
-
-      HStack {
-        Button {
-          Task {
-            await model.signInWithBrowser()
-          }
-        } label: {
-          Label(model.isAuthenticating ? "登录中" : "去登录", systemImage: "safari")
-        }
-        .disabled(model.isAuthenticating)
-
-        Button {
-          Task {
-            await model.importCodexAuth()
-          }
-        } label: {
-          Label("从 Codex 快捷登录", systemImage: "tray.and.arrow.down")
-        }
-
-        Spacer()
       }
     }
     .padding(18)

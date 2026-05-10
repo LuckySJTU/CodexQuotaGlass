@@ -1,207 +1,77 @@
 # CodexQuotaGlass
 
-CodexQuotaGlass is a native macOS menu bar app for showing Codex usage quota. It displays the five-hour and weekly remaining quota in the menu bar, a Liquid Glass-style detail panel, and desktop widgets.
+CodexQuotaGlass 是一个原生 macOS 菜单栏应用，用 Liquid Glass 风格展示 Codex 额度和本地 token 用量。它面向日常使用场景：不用打开终端，也能快速看到 5 小时额度、一周额度、重置时间，以及 Codex 本地 session 的 token 消耗统计。
 
-The app keeps its own auth file at:
+## 功能
+
+- 菜单栏紧凑显示 Codex 5 小时剩余额度，可选择进度条或类似 macOS 电量的图标样式。
+- 菜单栏弹窗展示 5 小时额度、一周额度、本地 token 用量和快捷操作。
+- 桌面小组件支持展示 quota 或 token 用量，并可按小型、中型、大型配置展示时间段。
+- 详情页展示完整额度、认证状态、本地日志统计、更新状态和菜单栏设置。
+- 支持浏览器登录，也支持从本机 Codex 配置中快捷导入认证。
+- 认证文件保存在应用自己的 Application Support 目录，不需要每次读取 Codex CLI 的认证文件。
+- 解析 `~/.codex` 下的本地日志与 session 记录，统计今日、昨日、过去 7 天、过去 30 天和有史以来的 input/output/reasoning/cache token 用量与调用次数。
+- 内置 GitHub Release 更新检查，可从 DMG 自动安装新版本。
+
+## 截图与显示位置
+
+CodexQuotaGlass 主要显示在三个地方：
+
+- macOS 菜单栏
+- 菜单栏弹出的 Liquid Glass 详情面板
+- macOS 桌面小组件
+
+当前版本已移除控制中心组件，重点保留菜单栏和桌面小组件体验。
+
+## 认证与隐私
+
+应用会把自己的认证文件保存在：
 
 ```text
 ~/Library/Application Support/CodexQuotaGlass/auth.json
 ```
 
-It can authenticate in two ways:
+支持两种登录方式：
 
-- Browser login through OpenAI/Codex OAuth.
-- "从 Codex 快捷登录", which imports an existing local `~/.codex/auth.json` once into the app's private auth store.
+- `网页登录`：通过浏览器完成 Codex/OpenAI 登录并写入应用自己的认证文件。
+- `从 Codex 快捷登录`：从本机 `~/.codex/auth.json` 导入一次认证信息到应用目录。
 
-## Requirements
+桌面小组件不会读取认证 token。小组件只读取主应用写入 App Group 的 quota/token 缓存。
 
-- macOS 14 or newer.
-- Xcode 26.4 or newer for the full app bundle and WidgetKit extension.
-- Swift 6 toolchain.
-- A personal Apple Development signing team if you want the desktop widget to appear in the macOS widget gallery.
+## 本地 token 统计
 
-## Repository Layout
+应用会读取默认 `~/.codex` 目录下的本地日志和 session 记录，统计：
 
-```text
-Package.swift                         SwiftPM package for source-level builds
-CodexQuotaGlass.xcodeproj             Xcode project for app + framework + widget
-Sources/CodexQuotaGlass               Menu bar app source
-Sources/CodexQuotaKit                 Shared quota/auth/cache library
-Extensions/CodexQuotaWidgets          WidgetKit extension
-Xcode/CodexQuotaGlass                 App Info.plist and AppIcon asset catalog
-script/build_and_run.sh               Local unsigned build/run helper
-script/install_signed_debug_app.sh    Signed build, install, widget registration helper
-```
+- input tokens
+- output tokens
+- reasoning output tokens
+- cached input tokens
+- total tokens
+- 调用次数
+- session 数量
 
-## SwiftPM Build
+统计时间段包括今日、昨日、过去 7 天、过去 30 天和有史以来。
 
-SwiftPM is useful for fast compile verification of the shared code and menu bar executable:
+## 安装与构建
 
-```bash
-swift build
-```
-
-Products:
-
-- `CodexQuotaGlass`: executable target for the app logic.
-- `CodexQuotaKit`: shared library target for auth, usage fetch, formatting, and cache.
-
-SwiftPM does not produce a real macOS `.app` bundle with the WidgetKit extension. Use the Xcode project for anything involving desktop widgets, signing, or installation.
-
-## Xcode Compile Check
-
-This checks the full Xcode project without requiring code signing:
-
-```bash
-DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
-xcodebuild -project CodexQuotaGlass.xcodeproj \
-  -scheme CodexQuotaGlass \
-  -configuration Debug \
-  -derivedDataPath DerivedData \
-  CODE_SIGNING_ALLOWED=NO \
-  build
-```
-
-The unsigned build verifies compilation, but it will not install or register the desktop widget.
-
-## Run Locally
-
-For a quick unsigned local app run:
-
-```bash
-./script/build_and_run.sh
-```
-
-Useful modes:
-
-```bash
-./script/build_and_run.sh --verify
-./script/build_and_run.sh --logs
-./script/build_and_run.sh --debug
-```
-
-By default this writes build output to `DerivedData/`, which is ignored by Git.
-
-## Signing Setup
-
-Desktop widgets require a signed app installed in `/Applications`.
-
-1. Open `CodexQuotaGlass.xcodeproj` in Xcode.
-2. Select the `CodexQuotaGlass` app target.
-3. Open Signing & Capabilities.
-4. Enable "Automatically manage signing".
-5. Select your Team.
-6. Confirm App Groups is enabled.
-7. Select the `CodexQuotaWidgets` extension target.
-8. Use the same Team and App Groups capability.
-9. Build the `CodexQuotaGlass` scheme for `My Mac`.
-
-The app group is defined as:
+发布版推荐从 GitHub Releases 下载 DMG：
 
 ```text
-$(TeamIdentifierPrefix)CodexQuotaGlass
+https://github.com/LuckySJTU/CodexQuotaGlass/releases
 ```
 
-At build time Xcode expands this to a Team ID-prefixed value such as:
+本地开发、签名、小组件注册、DMG 打包和排障说明见：
 
 ```text
-C4ZGXC6MY9.CodexQuotaGlass
+DEV.md
 ```
 
-Both the app and widget read the expanded value from their bundled Info.plist files, so the shared quota cache stays aligned across targets.
+## 系统要求
 
-## Install Signed Build
+- macOS 14 或更新版本。
+- 桌面小组件需要使用 Xcode 签名后的 app bundle。
+- 本地构建需要 Swift 6 toolchain 和 Xcode。
 
-After signing is configured, install the Release build into `/Applications`:
+## 版本
 
-```bash
-CONFIGURATION=Release \
-DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
-./script/install_signed_debug_app.sh
-```
-
-The script:
-
-- Builds the app with Xcode.
-- Stops any running `CodexQuotaGlass` process.
-- Copies the app to `/Applications/CodexQuotaGlass.app`.
-- Registers the WidgetKit extension.
-- Launches the app.
-
-If the widget gallery is already open, close and reopen it, then search for `Codex Quota`.
-
-## Verify Installation
-
-```bash
-codesign -vvv --strict /Applications/CodexQuotaGlass.app \
-  /Applications/CodexQuotaGlass.app/Contents/PlugIns/CodexQuotaWidgets.appex
-
-pluginkit -m -A -D -v -p com.apple.widgetkit-extension | grep -i "CodexQuota"
-
-plutil -p /Applications/CodexQuotaGlass.app/Contents/Info.plist
-```
-
-The installed app should contain:
-
-```text
-/Applications/CodexQuotaGlass.app/Contents/Resources/AppIcon.icns
-/Applications/CodexQuotaGlass.app/Contents/Resources/Assets.car
-```
-
-## Build a DMG
-
-Build and install a signed Release app first:
-
-```bash
-CONFIGURATION=Release \
-DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
-./script/install_signed_debug_app.sh
-```
-
-Then create a distributable DMG in the repository root:
-
-```bash
-mkdir -p dist/dmg-root
-ditto /Applications/CodexQuotaGlass.app dist/dmg-root/CodexQuotaGlass.app
-hdiutil create \
-  -volname CodexQuotaGlass \
-  -srcfolder dist/dmg-root \
-  -ov \
-  -format UDZO \
-  CodexQuotaGlass.dmg
-```
-
-`CodexQuotaGlass.dmg` is ignored by Git and should be distributed separately unless you intentionally publish it as a release artifact.
-
-## Authentication Notes
-
-Browser login uses a local callback server on:
-
-```text
-http://localhost:1455/auth/callback
-```
-
-The app requests the OAuth scopes:
-
-```text
-openid profile email offline_access
-```
-
-After login, the app saves tokens only to its private Application Support auth file. Widgets never receive tokens; they only read cached quota values from the app group container.
-
-## Troubleshooting
-
-If the widget does not appear:
-
-```bash
-pluginkit -m -A -D -v -p com.apple.widgetkit-extension | grep -i "CodexQuota"
-```
-
-If multiple entries appear, remove stale builds and reinstall:
-
-```bash
-pluginkit -r /path/to/stale/CodexQuotaWidgets.appex
-CONFIGURATION=Release ./script/install_signed_debug_app.sh
-```
-
-If browser login fails with port unavailable, another process is already listening on `localhost:1455`. Stop the other login flow or restart the app and try again.
+当前发布版本：`v1.1.0`

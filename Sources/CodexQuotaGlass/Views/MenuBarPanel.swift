@@ -5,6 +5,8 @@ import SwiftUI
 struct MenuBarPanel: View {
   @ObservedObject var model: QuotaViewModel
   @Environment(\.openWindow) private var openWindow
+  @AppStorage(MenuBarLocalUsagePeriodPreference.storageKey)
+  private var localUsagePeriodsRawValue = MenuBarLocalUsagePeriodPreference.defaultRawValue
 
   var body: some View {
     VStack(alignment: .leading, spacing: 14) {
@@ -37,7 +39,7 @@ struct MenuBarPanel: View {
 
         Button {
           Task {
-            await model.refresh()
+            await model.refresh(forceLocalUsage: true)
           }
         } label: {
           Image(systemName: "arrow.clockwise")
@@ -81,6 +83,13 @@ struct MenuBarPanel: View {
         .padding(14)
         .quotaGlass(cornerRadius: 16)
       }
+
+      LocalUsageSummaryCard(
+        summary: model.localUsageSummary,
+        isRefreshing: model.isRefreshingLocalUsage,
+        compact: true,
+        displayedPeriods: MenuBarLocalUsagePeriodPreference.periods(from: localUsagePeriodsRawValue)
+      )
 
       HStack {
         Button {
