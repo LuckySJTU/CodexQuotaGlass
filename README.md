@@ -21,17 +21,18 @@ CodexQuotaGlass 主要显示在三个地方：
 
 ### macOS菜单栏
 提供四种不同样式的菜单栏组件可选，可直观显示5小时剩余额度。
-![menubar_style](./assets/menubar_style.png)
+
+<img src="./assets/menubar_style.png" alt="menubar"/>
 
 ### 菜单栏弹出菜单
 
 点击菜单栏图标后的菜单，展示剩余额度信息和本地用量信息。可选择用量信息中想要展示的时间段。
 
-<img src="./assets/menu.png" alt="menu" style="zoom:50%;" />
+<img src="./assets/menu.png" alt="menu" width="400" />
 
 点击“详情”后可展开详细信息和设置面板。
 
-<img src="./assets/settingpage.png" alt="settingpage" style="zoom:50%;" />
+<img src="./assets/settingpage.png" alt="settingpage" width="600" />
 
 ### 桌面小组件
 
@@ -39,11 +40,11 @@ CodexQuotaGlass 主要显示在三个地方：
 
 展示剩余额度：
 
-<img src="./assets/widget_quota.png" alt="widget_quota" style="zoom:50%;" />
+<img src="./assets/widget_quota.png" alt="widget_quota" width="400" />
 
 展示本地用量信息，支持自定义展示时间段：
 
-<img src="./assets/widget_token.png" alt="widget_token" style="zoom:50%;" />
+<img src="./assets/widget_token.png" alt="widget_token" width="400" />
 
 ## 认证与隐私
 
