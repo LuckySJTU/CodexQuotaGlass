@@ -62,9 +62,19 @@ struct MenuBarStatusLabel: View {
       return "Codex Quota：去登录"
     }
 
-    let fiveHourReset = QuotaFormatting.resetClock(snapshot.fiveHour.resetsAt)
+    let window = snapshot.primaryDisplayWindow
+    let resetText = resetText(for: window)
 
-    return "Codex 5 小时额度：剩余 \(QuotaFormatting.percent(snapshot.fiveHour.remainingPercent))，重置 \(fiveHourReset)，菜单栏样式：\(style.title)"
+    return "Codex \(window.title)额度：剩余 \(QuotaFormatting.percent(window.remainingPercent))，重置 \(resetText)，菜单栏样式：\(style.title)"
+  }
+
+  private func resetText(for window: RateLimitWindow) -> String {
+    switch window.kind {
+    case .fiveHour:
+      QuotaFormatting.resetClock(window.resetsAt)
+    case .weekly:
+      QuotaFormatting.resetDays(window.resetsAt)
+    }
   }
 }
 
@@ -88,24 +98,36 @@ private enum MenuBarStatusImageRenderer {
     if snapshot.isPlaceholder {
       drawLoginText(in: size)
     } else {
+      let window = snapshot.primaryDisplayWindow
+      let resetText = resetText(for: window)
+
       switch style {
       case .progressReset:
-        drawQuotaBar(fraction: snapshot.fiveHour.remainingFraction)
-        drawResetText(QuotaFormatting.resetClock(snapshot.fiveHour.resetsAt))
+        drawQuotaBar(fraction: window.remainingFraction)
+        drawResetText(resetText)
       case .batteryOnly:
-        drawBattery(fraction: snapshot.fiveHour.remainingFraction, in: NSRect(x: 1, y: 3, width: 25, height: 10))
+        drawBattery(fraction: window.remainingFraction, in: NSRect(x: 1, y: 3, width: 25, height: 10))
       case .batteryPercentOutside:
-        drawBattery(fraction: snapshot.fiveHour.remainingFraction, in: NSRect(x: 1, y: 3, width: 25, height: 10))
-        drawPercentText(QuotaFormatting.percent(snapshot.fiveHour.remainingPercent), in: NSRect(x: 31, y: 1, width: 22, height: 13), fontSize: 10)
+        drawBattery(fraction: window.remainingFraction, in: NSRect(x: 1, y: 3, width: 25, height: 10))
+        drawPercentText(QuotaFormatting.percent(window.remainingPercent), in: NSRect(x: 31, y: 1, width: 22, height: 13), fontSize: 10)
       case .batteryPercentInside:
-        drawBattery(fraction: snapshot.fiveHour.remainingFraction, in: NSRect(x: 1, y: 2, width: 32, height: 12), fillAlpha: 0.34)
-        drawPercentText(QuotaFormatting.percent(snapshot.fiveHour.remainingPercent), in: NSRect(x: 2, y: 2, width: 30, height: 12), fontSize: 8.5)
+        drawBattery(fraction: window.remainingFraction, in: NSRect(x: 1, y: 2, width: 32, height: 12), fillAlpha: 0.34)
+        drawPercentText(QuotaFormatting.percent(window.remainingPercent), in: NSRect(x: 2, y: 2, width: 30, height: 12), fontSize: 8.5)
       }
     }
 
     image.unlockFocus()
     image.isTemplate = true
     return image
+  }
+
+  private static func resetText(for window: RateLimitWindow) -> String {
+    switch window.kind {
+    case .fiveHour:
+      QuotaFormatting.resetClock(window.resetsAt)
+    case .weekly:
+      QuotaFormatting.resetDays(window.resetsAt)
+    }
   }
 
   private static func drawQuotaBar(fraction: Double) {

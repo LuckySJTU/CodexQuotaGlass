@@ -90,6 +90,15 @@ struct CodexQuotaWidgetView: View {
         )
       } else if entry.snapshot.isPlaceholder {
         loggedOut
+      } else if isWeeklyOnly {
+        switch family {
+        case .systemLarge:
+          weeklyOnlyLarge
+        case .systemMedium:
+          weeklyOnlyMedium
+        default:
+          weeklyOnlySmall
+        }
       } else {
         switch family {
         case .systemLarge:
@@ -140,52 +149,211 @@ struct CodexQuotaWidgetView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
   }
 
+  private var weeklyOnlySmall: some View {
+    let weekly = entry.snapshot.weekly
+
+    return VStack(alignment: .leading, spacing: 0) {
+      widgetHeader(title: "Codex", showsTimestamp: false)
+
+      HStack(alignment: .firstTextBaseline, spacing: 5) {
+        Text("周额度")
+          .font(.system(size: 9, weight: .semibold))
+          .foregroundStyle(.secondary)
+
+        Text("重置 \(resetText(for: weekly))")
+          .font(.system(size: 9, weight: .medium, design: .monospaced))
+          .foregroundStyle(.secondary)
+          .lineLimit(1)
+
+        Text("取消 5h")
+          .font(.system(size: 9, weight: .semibold))
+          .foregroundStyle(.tertiary)
+
+        Spacer(minLength: 0)
+      }
+      .lineLimit(1)
+      .minimumScaleFactor(0.68)
+
+      Spacer(minLength: 0)
+
+      Text(QuotaFormatting.percent(weekly.remainingPercent))
+        .font(.system(size: 66, weight: .semibold, design: .rounded).monospacedDigit())
+        .lineLimit(1)
+        .minimumScaleFactor(0.48)
+        .layoutPriority(1)
+        .frame(maxWidth: .infinity, alignment: .leading)
+
+      Spacer(minLength: 0)
+
+      WidgetContinuousMeter(value: weekly.remainingFraction, height: 8)
+    }
+    .padding(12)
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+  }
+
+  private var weeklyOnlyMedium: some View {
+    let weekly = entry.snapshot.weekly
+
+    return VStack(alignment: .leading, spacing: 0) {
+      widgetHeader(title: "Codex Quota", showsTimestamp: true)
+
+      HStack(alignment: .center, spacing: 12) {
+        Text(QuotaFormatting.percent(weekly.remainingPercent))
+          .font(.system(size: 84, weight: .semibold, design: .rounded).monospacedDigit())
+          .lineLimit(1)
+          .minimumScaleFactor(0.52)
+          .layoutPriority(1)
+
+        Spacer(minLength: 8)
+
+        VStack(alignment: .trailing, spacing: 4) {
+          Text("一周剩余")
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+
+          Text("重置 \(resetText(for: weekly))")
+            .font(.caption2.monospacedDigit())
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+            .minimumScaleFactor(0.75)
+
+          Text("已用 \(QuotaFormatting.percent(weekly.usedPercent))")
+            .font(.caption2.monospacedDigit())
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+
+          Text("新版取消 5h")
+            .font(.caption2.weight(.semibold))
+            .foregroundStyle(.tertiary)
+            .lineLimit(1)
+            .minimumScaleFactor(0.75)
+        }
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+
+      WidgetContinuousMeter(value: weekly.remainingFraction, height: 10)
+    }
+    .padding(12)
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+  }
+
+  private var weeklyOnlyLarge: some View {
+    let weekly = entry.snapshot.weekly
+
+    return VStack(alignment: .leading, spacing: 0) {
+      widgetHeader(title: "Codex Quota", showsTimestamp: true)
+
+      Spacer(minLength: 10)
+
+      HStack(alignment: .lastTextBaseline, spacing: 12) {
+        Text(QuotaFormatting.percent(weekly.remainingPercent))
+          .font(.system(size: 60, weight: .semibold, design: .rounded).monospacedDigit())
+          .lineLimit(1)
+          .minimumScaleFactor(0.62)
+
+        VStack(alignment: .leading, spacing: 4) {
+          Text("一周剩余额度")
+            .font(.callout.weight(.semibold))
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+
+          Text("已用 \(QuotaFormatting.percent(weekly.usedPercent))")
+            .font(.caption.monospacedDigit())
+            .foregroundStyle(.tertiary)
+            .lineLimit(1)
+        }
+
+        Spacer(minLength: 0)
+      }
+
+      Spacer(minLength: 10)
+
+      WidgetContinuousMeter(value: weekly.remainingFraction, height: 10)
+
+      Spacer(minLength: 12)
+
+      VStack(alignment: .leading, spacing: 9) {
+        HStack(alignment: .firstTextBaseline, spacing: 18) {
+          WidgetQuotaTinyStat(title: "周重置", value: resetText(for: weekly))
+
+          WidgetQuotaTinyStat(title: "已用", value: QuotaFormatting.percent(weekly.usedPercent))
+
+          Spacer(minLength: 0)
+        }
+
+        HStack(alignment: .firstTextBaseline, spacing: 6) {
+          Image(systemName: "info.circle")
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(.secondary)
+
+          Label("新版 Codex App 已取消 5h 额度", systemImage: "info.circle")
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+            .minimumScaleFactor(0.68)
+            .labelStyle(.titleOnly)
+
+          Spacer(minLength: 0)
+        }
+      }
+
+      Spacer(minLength: 0)
+    }
+    .padding(14)
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+  }
+
   private var small: some View {
-    VStack(alignment: .leading, spacing: 0) {
+    let primary = entry.snapshot.primaryDisplayWindow
+    let secondary = entry.snapshot.secondaryDisplayWindow
+
+    return VStack(alignment: .leading, spacing: 0) {
       widgetHeader(title: "Codex", showsTimestamp: false)
 
       Spacer(minLength: 8)
 
       WidgetPrimaryQuotaBlock(
-        window: entry.snapshot.fiveHour,
-        resetText: QuotaFormatting.resetClock(entry.snapshot.fiveHour.resetsAt),
+        window: primary,
+        resetText: resetText(for: primary),
         percentSize: 34,
         meterHeight: 8
       )
 
-      Spacer(minLength: 9)
+      if let secondary {
+        Spacer(minLength: 9)
 
-      Divider()
-        .opacity(0.45)
+        Divider()
+          .opacity(0.45)
 
-      Spacer(minLength: 8)
+        Spacer(minLength: 8)
 
-      WidgetSecondaryQuotaLine(
-        window: entry.snapshot.weekly,
-        resetText: QuotaFormatting.resetDays(entry.snapshot.weekly.resetsAt, now: entry.date),
-        meterHeight: 6
-      )
+        WidgetSecondaryQuotaLine(
+          window: secondary,
+          resetText: resetText(for: secondary),
+          meterHeight: 6
+        )
+      }
     }
     .padding(12)
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
   }
 
   private var medium: some View {
-    VStack(alignment: .leading, spacing: 0) {
+    let windows = availableWindows
+
+    return VStack(alignment: .leading, spacing: 0) {
       widgetHeader(title: "Codex Quota", showsTimestamp: true)
 
       Spacer(minLength: 10)
 
       HStack(spacing: 14) {
-        WidgetQuotaMeterCard(
-          window: entry.snapshot.fiveHour,
-          resetText: QuotaFormatting.resetClock(entry.snapshot.fiveHour.resetsAt)
-        )
-
-        WidgetQuotaMeterCard(
-          window: entry.snapshot.weekly,
-          resetText: QuotaFormatting.resetDays(entry.snapshot.weekly.resetsAt, now: entry.date)
-        )
+        ForEach(windows) { window in
+          WidgetQuotaMeterCard(
+            window: window,
+            resetText: resetText(for: window)
+          )
+        }
       }
       .frame(maxHeight: .infinity)
     }
@@ -194,28 +362,32 @@ struct CodexQuotaWidgetView: View {
   }
 
   private var large: some View {
-    VStack(alignment: .leading, spacing: 0) {
+    let primary = entry.snapshot.primaryDisplayWindow
+    let secondary = entry.snapshot.secondaryDisplayWindow
+
+    return VStack(alignment: .leading, spacing: 0) {
       widgetHeader(title: "Codex Quota", showsTimestamp: true)
 
       Spacer(minLength: 12)
 
       WidgetLargeQuotaHero(
-        window: entry.snapshot.fiveHour,
-        resetText: QuotaFormatting.resetClock(entry.snapshot.fiveHour.resetsAt)
+        window: primary,
+        resetText: resetText(for: primary)
       )
 
-      Spacer(minLength: 14)
+      if let secondary {
+        Spacer(minLength: 14)
 
-      Divider()
-        .opacity(0.38)
+        Divider()
+          .opacity(0.38)
 
-      Spacer(minLength: 14)
+        Spacer(minLength: 14)
 
-      WidgetLargeQuotaFooter(
-        fiveHour: entry.snapshot.fiveHour,
-        weekly: entry.snapshot.weekly,
-        weeklyResetText: QuotaFormatting.resetDays(entry.snapshot.weekly.resetsAt, now: entry.date)
-      )
+        WidgetWeeklyQuotaBand(
+          window: secondary,
+          resetText: resetText(for: secondary)
+        )
+      }
     }
     .padding(14)
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -242,6 +414,24 @@ struct CodexQuotaWidgetView: View {
       }
 
       Spacer(minLength: 0)
+    }
+  }
+
+  private var availableWindows: [RateLimitWindow] {
+    let windows = entry.snapshot.availableWindows
+    return windows.isEmpty ? [entry.snapshot.primaryDisplayWindow] : windows
+  }
+
+  private var isWeeklyOnly: Bool {
+    !entry.snapshot.fiveHour.isAvailable && entry.snapshot.weekly.isAvailable
+  }
+
+  private func resetText(for window: RateLimitWindow) -> String {
+    switch window.kind {
+    case .fiveHour:
+      QuotaFormatting.resetClock(window.resetsAt)
+    case .weekly:
+      QuotaFormatting.resetDays(window.resetsAt, now: entry.date)
     }
   }
 }

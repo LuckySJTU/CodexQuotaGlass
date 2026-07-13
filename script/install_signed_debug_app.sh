@@ -23,6 +23,7 @@ xcodebuild \
   build
 
 pkill -x "$APP_NAME" >/dev/null 2>&1 || true
+pkill -x "CodexQuotaWidgets" >/dev/null 2>&1 || true
 
 rm -rf "$INSTALL_APP"
 ditto "$BUILT_APP" "$INSTALL_APP"

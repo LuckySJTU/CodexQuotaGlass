@@ -53,16 +53,27 @@ struct DashboardView: View {
   @ViewBuilder
   private var quotaSection: some View {
     if model.isLoggedIn {
-      HStack(spacing: 14) {
-        QuotaMetricCard(
-          window: model.snapshot.fiveHour,
-          resetText: model.fiveHourResetText
-        )
+      if model.snapshot.fiveHour.isAvailable {
+        HStack(spacing: 14) {
+          QuotaMetricCard(
+            window: model.snapshot.fiveHour,
+            resetText: model.fiveHourResetText
+          )
 
-        QuotaMetricCard(
-          window: model.snapshot.weekly,
-          resetText: model.weeklyResetText
-        )
+          QuotaMetricCard(
+            window: model.snapshot.weekly,
+            resetText: model.weeklyResetText
+          )
+        }
+      } else {
+        VStack(alignment: .leading, spacing: 12) {
+          WeeklyOnlyQuotaCard(
+            window: model.snapshot.weekly,
+            resetText: model.weeklyResetText
+          )
+
+          CodexQuotaVersionNotice()
+        }
       }
     } else {
       LoggedOutDetailCard()
@@ -71,11 +82,20 @@ struct DashboardView: View {
 
   private var detailStatusCard: some View {
     VStack(alignment: .leading, spacing: 10) {
-      DetailRow(
-        title: "5 小时重置",
-        value: model.fiveHourResetText,
-        symbol: "clock"
-      )
+      if model.snapshot.fiveHour.isAvailable {
+        DetailRow(
+          title: "5 小时重置",
+          value: model.fiveHourResetText,
+          symbol: "clock"
+        )
+      } else {
+        DetailRow(
+          title: "5 小时额度",
+          value: "新版 Codex App 已取消",
+          symbol: "clock.badge.xmark"
+        )
+      }
+
       DetailRow(
         title: "一周重置",
         value: model.weeklyResetText,

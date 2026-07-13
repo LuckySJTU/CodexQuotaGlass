@@ -50,23 +50,31 @@ struct MenuBarPanel: View {
       }
 
       if model.isLoggedIn {
-        QuotaMetricCard(
-          window: model.snapshot.fiveHour,
-          resetText: model.fiveHourResetText,
-          compact: true
-        )
+        if model.snapshot.fiveHour.isAvailable {
+          QuotaMetricCard(
+            window: model.snapshot.fiveHour,
+            resetText: model.fiveHourResetText,
+            compact: true
+          )
 
-        QuotaMetricCard(
-          window: model.snapshot.weekly,
-          resetText: model.weeklyResetText,
-          compact: true
-        )
+          QuotaMetricCard(
+            window: model.snapshot.weekly,
+            resetText: model.weeklyResetText,
+            compact: true
+          )
+        } else {
+          WeeklyOnlyQuotaCard(
+            window: model.snapshot.weekly,
+            resetText: model.weeklyResetText,
+            compact: true
+          )
+        }
       } else {
         VStack(alignment: .leading, spacing: 10) {
           Text("去登录")
             .font(.title3.weight(.semibold))
 
-          Text("登录后显示 5 小时和一周 Codex 剩余额度。")
+          Text("登录后显示 Codex 剩余额度。")
             .font(.caption)
             .foregroundStyle(.secondary)
 

@@ -19,30 +19,125 @@ struct QuotaMetricCard: View {
           .foregroundStyle(.secondary)
       }
 
-      HStack(spacing: compact ? 12 : 16) {
-        ZStack {
-          RingMeter(value: window.remainingFraction, lineWidth: compact ? 6 : 8)
-          Text(QuotaFormatting.percent(window.remainingPercent))
-            .font((compact ? Font.callout : Font.title3).weight(.semibold).monospacedDigit())
-        }
-        .frame(width: compact ? 56 : 72, height: compact ? 56 : 72)
+      if window.isAvailable {
+        HStack(spacing: compact ? 12 : 16) {
+          ZStack {
+            RingMeter(value: window.remainingFraction, lineWidth: compact ? 6 : 8)
+            Text(QuotaFormatting.percent(window.remainingPercent))
+              .font((compact ? Font.callout : Font.title3).weight(.semibold).monospacedDigit())
+          }
+          .frame(width: compact ? 56 : 72, height: compact ? 56 : 72)
 
+          VStack(alignment: .leading, spacing: 6) {
+            Text("剩余")
+              .font(.caption)
+              .foregroundStyle(.secondary)
+
+            ProgressView(value: window.remainingFraction)
+              .tint(.cyan)
+
+            Text("已用 \(QuotaFormatting.percent(window.usedPercent))")
+              .font(.caption.monospacedDigit())
+              .foregroundStyle(.secondary)
+          }
+        }
+      } else {
         VStack(alignment: .leading, spacing: 6) {
-          Text("剩余")
+          Text("当前接口未提供")
+            .font((compact ? Font.callout : Font.title3).weight(.semibold))
+
+          Text("新版 Codex App 暂未返回这个时间窗。")
             .font(.caption)
             .foregroundStyle(.secondary)
-
-          ProgressView(value: window.remainingFraction)
-            .tint(.cyan)
-
-          Text("已用 \(QuotaFormatting.percent(window.usedPercent))")
-            .font(.caption.monospacedDigit())
-            .foregroundStyle(.secondary)
+            .lineLimit(2)
         }
+        .frame(maxWidth: .infinity, minHeight: compact ? 56 : 72, alignment: .leading)
       }
     }
     .padding(compact ? 14 : 16)
     .quotaGlass(cornerRadius: compact ? 16 : 20)
+  }
+}
+
+struct WeeklyOnlyQuotaCard: View {
+  var window: RateLimitWindow
+  var resetText: String
+  var compact = false
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: compact ? 12 : 16) {
+      HStack(alignment: .top, spacing: 10) {
+        VStack(alignment: .leading, spacing: 3) {
+          Text("一周额度")
+            .font(compact ? .headline : .title3.weight(.semibold))
+
+          Text("新版 Codex App 已取消 5h 额度")
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+            .minimumScaleFactor(0.82)
+        }
+
+        Spacer()
+
+        Label(resetText, systemImage: "calendar")
+          .font(.caption.monospacedDigit())
+          .foregroundStyle(.secondary)
+          .labelStyle(.titleAndIcon)
+      }
+
+      HStack(alignment: .lastTextBaseline, spacing: compact ? 10 : 14) {
+        Text(QuotaFormatting.percent(window.remainingPercent))
+          .font(.system(size: compact ? 42 : 58, weight: .semibold, design: .rounded).monospacedDigit())
+          .lineLimit(1)
+          .minimumScaleFactor(0.65)
+
+        VStack(alignment: .leading, spacing: 3) {
+          Text("剩余")
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(.secondary)
+
+          Text("已用 \(QuotaFormatting.percent(window.usedPercent))")
+            .font(.caption.monospacedDigit())
+            .foregroundStyle(.tertiary)
+        }
+
+        Spacer(minLength: 0)
+      }
+
+      ProgressView(value: window.remainingFraction)
+        .tint(.cyan)
+
+      if !compact, let limitName = window.limitName {
+        Text(limitName)
+          .font(.caption2)
+          .foregroundStyle(.tertiary)
+          .lineLimit(1)
+      }
+    }
+    .padding(compact ? 14 : 18)
+    .quotaGlass(cornerRadius: compact ? 16 : 20)
+  }
+}
+
+struct CodexQuotaVersionNotice: View {
+  var compact = false
+
+  var body: some View {
+    HStack(alignment: .firstTextBaseline, spacing: 8) {
+      Image(systemName: "info.circle")
+        .font(compact ? .caption : .callout)
+        .foregroundStyle(.secondary)
+
+      Text("新版 Codex App 已取消 5h 额度，当前仅显示一周额度。")
+        .font(compact ? .caption : .callout)
+        .foregroundStyle(.secondary)
+        .lineLimit(compact ? 2 : 1)
+        .minimumScaleFactor(0.82)
+    }
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .padding(compact ? 10 : 12)
+    .quotaGlass(cornerRadius: compact ? 14 : 16)
   }
 }
 

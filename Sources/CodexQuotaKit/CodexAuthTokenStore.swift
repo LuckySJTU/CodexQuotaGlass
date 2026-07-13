@@ -85,6 +85,16 @@ public struct CodexAuthFile: Codable, Equatable, Sendable {
   }
 }
 
+public struct CodexAuthContext: Equatable, Sendable {
+  public var accessToken: String
+  public var accountID: String?
+
+  public init(accessToken: String, accountID: String? = nil) {
+    self.accessToken = accessToken
+    self.accountID = accountID
+  }
+}
+
 public struct CodexAuthTokenStore: Sendable {
   public static let appSupportDirectoryName = "CodexQuotaGlass"
   public static let authFileName = "auth.json"
@@ -138,6 +148,15 @@ public struct CodexAuthTokenStore: Sendable {
     }
 
     return authFile.tokens.accessToken
+  }
+
+  public func authContext() async throws -> CodexAuthContext {
+    let accessToken = try await accessToken()
+    let authFile = try loadPrivateAuth()
+    return CodexAuthContext(
+      accessToken: accessToken,
+      accountID: authFile.tokens.accountID
+    )
   }
 
   @discardableResult

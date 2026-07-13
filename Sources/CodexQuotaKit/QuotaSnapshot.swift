@@ -35,6 +35,10 @@ public struct RateLimitWindow: Codable, Equatable, Identifiable, Sendable {
     min(100, max(0, 100 - usedPercent))
   }
 
+  public var isAvailable: Bool {
+    windowMinutes > 0 && limitID != "unavailable"
+  }
+
   public var remainingFraction: Double {
     remainingPercent / 100
   }
@@ -59,6 +63,21 @@ public struct RateLimitWindow: Codable, Equatable, Identifiable, Sendable {
     case .weekly:
       "周"
     }
+  }
+
+  public static func unavailable(
+    kind: Kind,
+    now: Date = Date(),
+    limitName: String? = nil
+  ) -> RateLimitWindow {
+    RateLimitWindow(
+      kind: kind,
+      usedPercent: 100,
+      windowMinutes: 0,
+      resetsAt: now,
+      limitID: "unavailable",
+      limitName: limitName
+    )
   }
 }
 
@@ -106,5 +125,25 @@ public struct QuotaSnapshot: Codable, Equatable, Sendable {
       source: "preview",
       isPlaceholder: true
     )
+  }
+
+  public var availableWindows: [RateLimitWindow] {
+    [fiveHour, weekly].filter(\.isAvailable)
+  }
+
+  public var primaryDisplayWindow: RateLimitWindow {
+    if fiveHour.isAvailable {
+      return fiveHour
+    }
+
+    return weekly.isAvailable ? weekly : fiveHour
+  }
+
+  public var secondaryDisplayWindow: RateLimitWindow? {
+    if fiveHour.isAvailable && weekly.isAvailable {
+      return weekly
+    }
+
+    return nil
   }
 }

@@ -38,9 +38,13 @@ final class QuotaViewModel: ObservableObject {
     snapshot = initialSnapshot
     localUsageSummary = CodexLocalUsageSummaryCache().load() ?? .empty()
     updateState = appUpdateManager.initialState()
-    statusText = hasAuth && !initialSnapshot.isPlaceholder
-      ? "更新于 \(QuotaFormatting.capturedTime(initialSnapshot.capturedAt))"
-      : "去登录"
+    if hasAuth {
+      statusText = initialSnapshot.isPlaceholder
+        ? "正在刷新"
+        : "更新于 \(QuotaFormatting.capturedTime(initialSnapshot.capturedAt))"
+    } else {
+      statusText = "去登录"
+    }
 
     if !hasAuth {
       saveLoggedOutSnapshot(initialSnapshot)
@@ -82,7 +86,9 @@ final class QuotaViewModel: ObservableObject {
       isRefreshing = false
     }
 
-    await refreshLocalUsage(force: forceLocalUsage)
+    Task { [weak self] in
+      await self?.refreshLocalUsage(force: forceLocalUsage)
+    }
 
     guard provider.apiClient.tokenStore.hasPrivateAuth else {
       showLoggedOutState()
@@ -101,7 +107,9 @@ final class QuotaViewModel: ObservableObject {
     } catch {
       let cached = provider.loadCachedOrPlaceholder()
       snapshot = cached
-      statusText = cached.isPlaceholder ? "需要登录或重新授权" : "使用缓存：\(QuotaFormatting.capturedTime(cached.capturedAt))"
+      statusText = cached.isPlaceholder
+        ? "刷新失败：\(error.localizedDescription)"
+        : "使用缓存：\(QuotaFormatting.capturedTime(cached.capturedAt))"
     }
   }
 
@@ -250,11 +258,19 @@ final class QuotaViewModel: ObservableObject {
   }
 
   var fiveHourResetText: String {
-    QuotaFormatting.resetClock(snapshot.fiveHour.resetsAt)
+    guard snapshot.fiveHour.isAvailable else {
+      return "未提供"
+    }
+
+    return QuotaFormatting.resetClock(snapshot.fiveHour.resetsAt)
   }
 
   var weeklyResetText: String {
-    QuotaFormatting.resetDays(snapshot.weekly.resetsAt)
+    guard snapshot.weekly.isAvailable else {
+      return "未提供"
+    }
+
+    return QuotaFormatting.resetDays(snapshot.weekly.resetsAt)
   }
 
   var authStorageText: String {
