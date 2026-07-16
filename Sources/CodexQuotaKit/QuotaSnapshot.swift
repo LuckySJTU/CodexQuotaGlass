@@ -87,6 +87,7 @@ public struct QuotaSnapshot: Codable, Equatable, Sendable {
   public var capturedAt: Date
   public var source: String
   public var planType: String?
+  public var subscriptionPlan: String?
   public var isPlaceholder: Bool
 
   public init(
@@ -95,6 +96,7 @@ public struct QuotaSnapshot: Codable, Equatable, Sendable {
     capturedAt: Date,
     source: String,
     planType: String? = nil,
+    subscriptionPlan: String? = nil,
     isPlaceholder: Bool = false
   ) {
     self.fiveHour = fiveHour
@@ -102,6 +104,7 @@ public struct QuotaSnapshot: Codable, Equatable, Sendable {
     self.capturedAt = capturedAt
     self.source = source
     self.planType = planType
+    self.subscriptionPlan = subscriptionPlan
     self.isPlaceholder = isPlaceholder
   }
 
@@ -145,5 +148,14 @@ public struct QuotaSnapshot: Codable, Equatable, Sendable {
     }
 
     return nil
+  }
+
+  public var subscriptionDisplayName: String {
+    CodexAccountInfo.displayPlanName(
+      planType: planType,
+      subscriptionPlan: subscriptionPlan,
+      workspaceType: nil,
+      hasActiveSubscription: nil
+    )
   }
 }

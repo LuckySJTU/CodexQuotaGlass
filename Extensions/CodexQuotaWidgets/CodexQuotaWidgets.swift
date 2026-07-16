@@ -153,7 +153,7 @@ struct CodexQuotaWidgetView: View {
     let weekly = entry.snapshot.weekly
 
     return VStack(alignment: .leading, spacing: 0) {
-      widgetHeader(title: "Codex", showsTimestamp: false)
+      widgetHeader(title: "Codex", showsTimestamp: false, subscriptionText: subscriptionText)
 
       HStack(alignment: .firstTextBaseline, spacing: 5) {
         Text("周额度")
@@ -195,7 +195,7 @@ struct CodexQuotaWidgetView: View {
     let weekly = entry.snapshot.weekly
 
     return VStack(alignment: .leading, spacing: 0) {
-      widgetHeader(title: "Codex Quota", showsTimestamp: true)
+      widgetHeader(title: "Codex Quota", showsTimestamp: true, subscriptionText: subscriptionText)
 
       HStack(alignment: .center, spacing: 12) {
         Text(QuotaFormatting.percent(weekly.remainingPercent))
@@ -242,7 +242,7 @@ struct CodexQuotaWidgetView: View {
     let weekly = entry.snapshot.weekly
 
     return VStack(alignment: .leading, spacing: 0) {
-      widgetHeader(title: "Codex Quota", showsTimestamp: true)
+      widgetHeader(title: "Codex Quota", showsTimestamp: true, subscriptionText: subscriptionText)
 
       Spacer(minLength: 10)
 
@@ -309,7 +309,7 @@ struct CodexQuotaWidgetView: View {
     let secondary = entry.snapshot.secondaryDisplayWindow
 
     return VStack(alignment: .leading, spacing: 0) {
-      widgetHeader(title: "Codex", showsTimestamp: false)
+      widgetHeader(title: "Codex", showsTimestamp: false, subscriptionText: subscriptionText)
 
       Spacer(minLength: 8)
 
@@ -343,7 +343,7 @@ struct CodexQuotaWidgetView: View {
     let windows = availableWindows
 
     return VStack(alignment: .leading, spacing: 0) {
-      widgetHeader(title: "Codex Quota", showsTimestamp: true)
+      widgetHeader(title: "Codex Quota", showsTimestamp: true, subscriptionText: subscriptionText)
 
       Spacer(minLength: 10)
 
@@ -366,7 +366,7 @@ struct CodexQuotaWidgetView: View {
     let secondary = entry.snapshot.secondaryDisplayWindow
 
     return VStack(alignment: .leading, spacing: 0) {
-      widgetHeader(title: "Codex Quota", showsTimestamp: true)
+      widgetHeader(title: "Codex Quota", showsTimestamp: true, subscriptionText: subscriptionText)
 
       Spacer(minLength: 12)
 
@@ -393,7 +393,11 @@ struct CodexQuotaWidgetView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
   }
 
-  private func widgetHeader(title: String, showsTimestamp: Bool) -> some View {
+  private func widgetHeader(
+    title: String,
+    showsTimestamp: Bool,
+    subscriptionText: String? = nil
+  ) -> some View {
     HStack(spacing: 6) {
       Image(systemName: "sparkles")
         .symbolRenderingMode(.hierarchical)
@@ -414,7 +418,19 @@ struct CodexQuotaWidgetView: View {
       }
 
       Spacer(minLength: 0)
+
+      if let subscriptionText {
+        Text(subscriptionText)
+          .font(.caption2.weight(.semibold))
+          .foregroundStyle(.secondary)
+          .lineLimit(1)
+          .minimumScaleFactor(0.7)
+      }
     }
+  }
+
+  private var subscriptionText: String {
+    entry.snapshot.subscriptionDisplayName
   }
 
   private var availableWindows: [RateLimitWindow] {

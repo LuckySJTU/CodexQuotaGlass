@@ -57,19 +57,22 @@ struct DashboardView: View {
         HStack(spacing: 14) {
           QuotaMetricCard(
             window: model.snapshot.fiveHour,
-            resetText: model.fiveHourResetText
+            resetText: model.fiveHourResetText,
+            subscriptionText: model.subscriptionPlanText
           )
 
           QuotaMetricCard(
             window: model.snapshot.weekly,
-            resetText: model.weeklyResetText
+            resetText: model.weeklyResetText,
+            subscriptionText: model.subscriptionPlanText
           )
         }
       } else {
         VStack(alignment: .leading, spacing: 12) {
           WeeklyOnlyQuotaCard(
             window: model.snapshot.weekly,
-            resetText: model.weeklyResetText
+            resetText: model.weeklyResetText,
+            subscriptionText: model.subscriptionPlanText
           )
 
           CodexQuotaVersionNotice()
@@ -105,6 +108,11 @@ struct DashboardView: View {
         title: "数据源",
         value: model.isLoggedIn ? "Codex 登录认证" : "去登录",
         symbol: "doc.text.magnifyingglass"
+      )
+      DetailRow(
+        title: "订阅类型",
+        value: model.subscriptionPlanText,
+        symbol: "person.text.rectangle"
       )
       DetailRow(
         title: "认证文件",

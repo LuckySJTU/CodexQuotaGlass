@@ -54,18 +54,21 @@ struct MenuBarPanel: View {
           QuotaMetricCard(
             window: model.snapshot.fiveHour,
             resetText: model.fiveHourResetText,
+            subscriptionText: model.subscriptionPlanText,
             compact: true
           )
 
           QuotaMetricCard(
             window: model.snapshot.weekly,
             resetText: model.weeklyResetText,
+            subscriptionText: model.subscriptionPlanText,
             compact: true
           )
         } else {
           WeeklyOnlyQuotaCard(
             window: model.snapshot.weekly,
             resetText: model.weeklyResetText,
+            subscriptionText: model.subscriptionPlanText,
             compact: true
           )
         }

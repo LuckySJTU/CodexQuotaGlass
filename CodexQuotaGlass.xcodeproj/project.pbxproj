@@ -28,6 +28,7 @@
 		B01000000000000000000006 /* Sources/CodexQuotaKit/QuotaSnapshotCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02000000000000000000006 /* Sources/CodexQuotaKit/QuotaSnapshotCache.swift */; };
 		B01000000000000000000007 /* Sources/CodexQuotaKit/CodexLocalUsageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02000000000000000000007 /* Sources/CodexQuotaKit/CodexLocalUsageProvider.swift */; };
 		B01000000000000000000008 /* Sources/CodexQuotaKit/CodexLocalUsageSummaryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02000000000000000000008 /* Sources/CodexQuotaKit/CodexLocalUsageSummaryCache.swift */; };
+		B01000000000000000000009 /* Sources/CodexQuotaKit/CodexAccountAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02000000000000000000009 /* Sources/CodexQuotaKit/CodexAccountAPIClient.swift */; };
 		C01000000000000000000001 /* Extensions/CodexQuotaWidgets/CodexQuotaWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03000000000000000000001 /* Extensions/CodexQuotaWidgets/CodexQuotaWidgets.swift */; };
 		C01000000000000000000002 /* CodexQuotaKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = P00000000000000000000002 /* CodexQuotaKit.framework */; };
 		C01000000000000000000003 /* CodexQuotaKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = P00000000000000000000002 /* CodexQuotaKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -114,6 +115,7 @@
 		F02000000000000000000006 /* Sources/CodexQuotaKit/QuotaSnapshotCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaKit/QuotaSnapshotCache.swift; sourceTree = "<group>"; };
 		F02000000000000000000007 /* Sources/CodexQuotaKit/CodexLocalUsageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaKit/CodexLocalUsageProvider.swift; sourceTree = "<group>"; };
 		F02000000000000000000008 /* Sources/CodexQuotaKit/CodexLocalUsageSummaryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaKit/CodexLocalUsageSummaryCache.swift; sourceTree = "<group>"; };
+		F02000000000000000000009 /* Sources/CodexQuotaKit/CodexAccountAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodexQuotaKit/CodexAccountAPIClient.swift; sourceTree = "<group>"; };
 		F03000000000000000000001 /* Extensions/CodexQuotaWidgets/CodexQuotaWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions/CodexQuotaWidgets/CodexQuotaWidgets.swift; sourceTree = "<group>"; };
 		F03000000000000000000002 /* Extensions/CodexQuotaWidgets/CodexQuotaWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Extensions/CodexQuotaWidgets/CodexQuotaWidgets.entitlements; sourceTree = "<group>"; };
 		F03000000000000000000003 /* Extensions/CodexQuotaWidgets/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Extensions/CodexQuotaWidgets/Info.plist; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				F02000000000000000000001 /* Sources/CodexQuotaKit/CodexAuthTokenStore.swift */,
 				F02000000000000000000002 /* Sources/CodexQuotaKit/CodexQuotaProvider.swift */,
 				F02000000000000000000003 /* Sources/CodexQuotaKit/CodexUsageAPIClient.swift */,
+				F02000000000000000000009 /* Sources/CodexQuotaKit/CodexAccountAPIClient.swift */,
 				F02000000000000000000004 /* Sources/CodexQuotaKit/QuotaFormatting.swift */,
 				F02000000000000000000005 /* Sources/CodexQuotaKit/QuotaSnapshot.swift */,
 				F02000000000000000000006 /* Sources/CodexQuotaKit/QuotaSnapshotCache.swift */,
@@ -372,6 +375,7 @@
 				B01000000000000000000001 /* Sources/CodexQuotaKit/CodexAuthTokenStore.swift in Sources */,
 				B01000000000000000000002 /* Sources/CodexQuotaKit/CodexQuotaProvider.swift in Sources */,
 				B01000000000000000000003 /* Sources/CodexQuotaKit/CodexUsageAPIClient.swift in Sources */,
+				B01000000000000000000009 /* Sources/CodexQuotaKit/CodexAccountAPIClient.swift in Sources */,
 				B01000000000000000000004 /* Sources/CodexQuotaKit/QuotaFormatting.swift in Sources */,
 				B01000000000000000000005 /* Sources/CodexQuotaKit/QuotaSnapshot.swift in Sources */,
 				B01000000000000000000006 /* Sources/CodexQuotaKit/QuotaSnapshotCache.swift in Sources */,
@@ -530,7 +534,7 @@
 					CODE_SIGN_ENTITLEMENTS = CodexQuotaGlass.entitlements;
 					CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = C4ZGXC6MY9;
 				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -540,7 +544,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.CodexQuotaGlass;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -555,7 +559,7 @@
 					CODE_SIGN_ENTITLEMENTS = CodexQuotaGlass.entitlements;
 					CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = C4ZGXC6MY9;
 				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -565,7 +569,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.CodexQuotaGlass;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -578,7 +582,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_DEBUG_DYLIB = NO;
@@ -590,7 +594,7 @@
 					"$(inherited)",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.CodexQuotaGlass.CodexQuotaKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -604,7 +608,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_DEBUG_DYLIB = NO;
@@ -616,7 +620,7 @@
 					"$(inherited)",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.CodexQuotaGlass.CodexQuotaKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -632,7 +636,7 @@
 					CODE_SIGN_ENTITLEMENTS = Extensions/CodexQuotaWidgets/CodexQuotaWidgets.entitlements;
 					CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = C4ZGXC6MY9;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -643,7 +647,7 @@
 					"@executable_path/../../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.CodexQuotaGlass.CodexQuotaWidgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -659,7 +663,7 @@
 					CODE_SIGN_ENTITLEMENTS = Extensions/CodexQuotaWidgets/CodexQuotaWidgets.entitlements;
 					CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = C4ZGXC6MY9;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -670,7 +674,7 @@
 					"@executable_path/../../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.CodexQuotaGlass.CodexQuotaWidgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

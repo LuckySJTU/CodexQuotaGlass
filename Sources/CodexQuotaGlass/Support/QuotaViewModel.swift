@@ -16,8 +16,11 @@ final class QuotaViewModel: ObservableObject {
   @Published private(set) var localUsageSummary: CodexLocalUsageSummary
   @Published private(set) var isRefreshingLocalUsage = false
   @Published private(set) var updateState: AppUpdateState
+  @Published private(set) var accountInfo: CodexAccountInfo?
+  @Published private(set) var accountInfoStatusText: String
 
   private let provider: CodexQuotaProvider
+  private let accountClient: CodexAccountAPIClient
   private let localUsageProvider: CodexLocalUsageProvider
   private let appUpdateManager: AppUpdateManager
   private let minimumLocalUsageRefreshInterval: TimeInterval = 5 * 60
@@ -26,24 +29,36 @@ final class QuotaViewModel: ObservableObject {
 
   init(
     provider: CodexQuotaProvider = CodexQuotaProvider(),
+    accountClient: CodexAccountAPIClient? = nil,
     localUsageProvider: CodexLocalUsageProvider = CodexLocalUsageProvider(),
     appUpdateManager: AppUpdateManager = AppUpdateManager()
   ) {
     self.provider = provider
+    self.accountClient = accountClient ?? CodexAccountAPIClient(tokenStore: provider.apiClient.tokenStore)
     self.localUsageProvider = localUsageProvider
     self.appUpdateManager = appUpdateManager
     let hasAuth = provider.apiClient.tokenStore.hasPrivateAuth
     isLoggedIn = hasAuth
     let initialSnapshot = hasAuth ? provider.loadCachedOrPlaceholder() : .placeholder()
     snapshot = initialSnapshot
+    let initialAccountInfo = initialSnapshot.planType.map {
+      CodexAccountInfo.fallback(
+        planType: $0,
+        capturedAt: initialSnapshot.capturedAt,
+        source: initialSnapshot.source
+      )
+    }
+    accountInfo = initialAccountInfo
     localUsageSummary = CodexLocalUsageSummaryCache().load() ?? .empty()
     updateState = appUpdateManager.initialState()
     if hasAuth {
       statusText = initialSnapshot.isPlaceholder
         ? "正在刷新"
         : "更新于 \(QuotaFormatting.capturedTime(initialSnapshot.capturedAt))"
+      accountInfoStatusText = initialAccountInfo == nil ? "正在获取订阅信息" : "来自 quota 缓存"
     } else {
       statusText = "去登录"
+      accountInfoStatusText = "去登录"
     }
 
     if !hasAuth {
@@ -103,10 +118,12 @@ final class QuotaViewModel: ObservableObject {
       isLoggedIn = true
       snapshot = refreshed
       statusText = "更新于 \(QuotaFormatting.capturedTime(refreshed.capturedAt))"
+      await refreshAccountInfo(fallbackSnapshot: refreshed)
       reloadSystemSurfaces()
     } catch {
       let cached = provider.loadCachedOrPlaceholder()
       snapshot = cached
+      applyFallbackAccountInfo(from: cached, reason: error.localizedDescription)
       statusText = cached.isPlaceholder
         ? "刷新失败：\(error.localizedDescription)"
         : "使用缓存：\(QuotaFormatting.capturedTime(cached.capturedAt))"
@@ -143,6 +160,31 @@ final class QuotaViewModel: ObservableObject {
       try CodexLocalUsageSummaryCache().save(summary)
     }.value
     reloadSystemSurfaces()
+  }
+
+  func refreshAccountInfo(fallbackSnapshot: QuotaSnapshot? = nil) async {
+    guard isLoggedIn else {
+      accountInfo = nil
+      accountInfoStatusText = "去登录"
+      return
+    }
+
+    let accountClient = accountClient
+
+    do {
+      let info = try await Task.detached(priority: .utility) {
+        try await accountClient.fetchAccountInfo()
+      }.value
+      accountInfo = info
+      accountInfoStatusText = "更新于 \(QuotaFormatting.capturedTime(info.capturedAt))"
+      applyAccountInfoToSnapshot(info)
+    } catch {
+      if let fallbackSnapshot {
+        applyFallbackAccountInfo(from: fallbackSnapshot, reason: error.localizedDescription)
+      } else {
+        accountInfoStatusText = "订阅信息获取失败：\(error.localizedDescription)"
+      }
+    }
   }
 
   func checkForUpdatesIfNeeded() async {
@@ -289,6 +331,30 @@ final class QuotaViewModel: ObservableObject {
     localUsageSummary.codexDirectory
   }
 
+  var subscriptionPlanText: String {
+    guard isLoggedIn else {
+      return "去登录"
+    }
+
+    if let accountInfo {
+      return accountInfo.displayPlanName
+    }
+
+    return snapshot.subscriptionDisplayName
+  }
+
+  var subscriptionDetailText: String {
+    guard isLoggedIn else {
+      return "去登录"
+    }
+
+    guard let accountInfo else {
+      return accountInfoStatusText
+    }
+
+    return accountInfo.rawSummaryText
+  }
+
   private func reloadSystemSurfaces() {
     #if canImport(WidgetKit)
     WidgetCenter.shared.reloadAllTimelines()
@@ -299,8 +365,38 @@ final class QuotaViewModel: ObservableObject {
     let placeholder = QuotaSnapshot.placeholder()
     isLoggedIn = false
     snapshot = placeholder
+    accountInfo = nil
+    accountInfoStatusText = "去登录"
     statusText = "去登录"
     saveLoggedOutSnapshot(placeholder)
+    reloadSystemSurfaces()
+  }
+
+  private func applyFallbackAccountInfo(from snapshot: QuotaSnapshot, reason: String) {
+    if let planType = snapshot.planType, !snapshot.isPlaceholder {
+      accountInfo = CodexAccountInfo.fallback(
+        planType: planType,
+        capturedAt: snapshot.capturedAt,
+        source: snapshot.source
+      )
+      accountInfoStatusText = "账户接口失败，使用 quota 字段：\(reason)"
+    } else {
+      accountInfo = nil
+      accountInfoStatusText = "订阅信息获取失败：\(reason)"
+    }
+  }
+
+  private func applyAccountInfoToSnapshot(_ info: CodexAccountInfo) {
+    var updated = snapshot
+    updated.planType = info.planType ?? updated.planType
+    updated.subscriptionPlan = info.subscriptionPlan
+    snapshot = updated
+
+    let provider = provider
+    Task.detached(priority: .utility) {
+      try? provider.cache.save(updated)
+    }
+
     reloadSystemSurfaces()
   }
 

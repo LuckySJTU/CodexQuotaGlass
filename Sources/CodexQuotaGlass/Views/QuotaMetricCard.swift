@@ -4,6 +4,7 @@ import SwiftUI
 struct QuotaMetricCard: View {
   var window: RateLimitWindow
   var resetText: String
+  var subscriptionText: String?
   var compact = false
 
   var body: some View {
@@ -29,16 +30,12 @@ struct QuotaMetricCard: View {
           .frame(width: compact ? 56 : 72, height: compact ? 56 : 72)
 
           VStack(alignment: .leading, spacing: 6) {
-            Text("剩余")
-              .font(.caption)
-              .foregroundStyle(.secondary)
+            quotaLabel
 
             ProgressView(value: window.remainingFraction)
               .tint(.cyan)
 
-            Text("已用 \(QuotaFormatting.percent(window.usedPercent))")
-              .font(.caption.monospacedDigit())
-              .foregroundStyle(.secondary)
+            usageFooter
           }
         }
       } else {
@@ -57,11 +54,58 @@ struct QuotaMetricCard: View {
     .padding(compact ? 14 : 16)
     .quotaGlass(cornerRadius: compact ? 16 : 20)
   }
+
+  @ViewBuilder
+  private var quotaLabel: some View {
+    if compact {
+      Text("剩余")
+        .font(.caption)
+        .foregroundStyle(.secondary)
+    } else {
+      VStack(alignment: .leading, spacing: 2) {
+        if let subscriptionText {
+          Text(subscriptionText)
+            .font(.caption2.weight(.semibold))
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+            .minimumScaleFactor(0.78)
+        }
+
+        Text("剩余")
+          .font(.caption)
+          .foregroundStyle(.secondary)
+      }
+    }
+  }
+
+  @ViewBuilder
+  private var usageFooter: some View {
+    if compact, let subscriptionText {
+      HStack(alignment: .firstTextBaseline, spacing: 8) {
+        Text("已用 \(QuotaFormatting.percent(window.usedPercent))")
+          .font(.caption.monospacedDigit())
+          .foregroundStyle(.secondary)
+
+        Spacer(minLength: 0)
+
+        Text(subscriptionText)
+          .font(.caption2.weight(.semibold))
+          .foregroundStyle(.secondary)
+          .lineLimit(1)
+          .minimumScaleFactor(0.72)
+      }
+    } else {
+      Text("已用 \(QuotaFormatting.percent(window.usedPercent))")
+        .font(.caption.monospacedDigit())
+        .foregroundStyle(.secondary)
+    }
+  }
 }
 
 struct WeeklyOnlyQuotaCard: View {
   var window: RateLimitWindow
   var resetText: String
+  var subscriptionText: String?
   var compact = false
 
   var body: some View {
@@ -93,13 +137,19 @@ struct WeeklyOnlyQuotaCard: View {
           .minimumScaleFactor(0.65)
 
         VStack(alignment: .leading, spacing: 3) {
+          if let subscriptionText, !compact {
+            Text(subscriptionText)
+              .font(.caption2.weight(.semibold))
+              .foregroundStyle(.secondary)
+              .lineLimit(1)
+              .minimumScaleFactor(0.78)
+          }
+
           Text("剩余")
             .font(.caption.weight(.semibold))
             .foregroundStyle(.secondary)
 
-          Text("已用 \(QuotaFormatting.percent(window.usedPercent))")
-            .font(.caption.monospacedDigit())
-            .foregroundStyle(.tertiary)
+          usageFooter
         }
 
         Spacer(minLength: 0)
@@ -117,6 +167,29 @@ struct WeeklyOnlyQuotaCard: View {
     }
     .padding(compact ? 14 : 18)
     .quotaGlass(cornerRadius: compact ? 16 : 20)
+  }
+
+  @ViewBuilder
+  private var usageFooter: some View {
+    if compact, let subscriptionText {
+      HStack(alignment: .firstTextBaseline, spacing: 8) {
+        Text("已用 \(QuotaFormatting.percent(window.usedPercent))")
+          .font(.caption.monospacedDigit())
+          .foregroundStyle(.tertiary)
+
+        Spacer(minLength: 0)
+
+        Text(subscriptionText)
+          .font(.caption2.weight(.semibold))
+          .foregroundStyle(.secondary)
+          .lineLimit(1)
+          .minimumScaleFactor(0.72)
+      }
+    } else {
+      Text("已用 \(QuotaFormatting.percent(window.usedPercent))")
+        .font(.caption.monospacedDigit())
+        .foregroundStyle(.tertiary)
+    }
   }
 }
 
